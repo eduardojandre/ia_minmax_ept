@@ -8,11 +8,9 @@ turn='x'
 opponent='o'
 
 board=tictac.createBoard()
-board[0]=['o','o',None]
-board[2]=['x',None,'x']
 playing=True
-#umanTurn=bool(int(input("Human starts? ")))#
-humanTurn=0
+humanTurn=bool(int(input("Human starts? ")))#
+
 tictac.printBoard(board)
 while playing:
     if humanTurn:
@@ -20,7 +18,6 @@ while playing:
         humanTurn=False
     else:
         v,board=agent.alphabeta(board,10000000,float('-inf'),float('inf'),True,turn,opponent)
-        #board=random.choice(boards)
         humanTurn=True
     if tictac.gameIsOver(board,turn):
         playing=False
