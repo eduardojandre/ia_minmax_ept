@@ -1,27 +1,23 @@
 from TicTacToe import TicTacToe
 from AlphaBetaAgent import AlphaBetaAgent
 import random
-tictac=TicTacToe()
-agent=AlphaBetaAgent(tictac)
 
-turn='x'
-opponent='o'
-
-board=tictac.createBoard()
 playing=True
 humanTurn=bool(int(input("Human starts? ")))#
+tictac=TicTacToe("x",humanTurn)
+agent=AlphaBetaAgent(tictac)
+boa=tictac.getBoard()
 
-tictac.printBoard(board)
+
+tictac.printBoard()
 while playing:
     if humanTurn:
-        tictac.humanPlay(board,turn)
+        tictac.humanPlay()
         humanTurn=False
     else:
-        v,board=agent.alphabeta(board,10000000,float('-inf'),float('inf'),True,turn,opponent)
+        v,board=agent.alphabeta(10000000,float('-inf'),float('inf'),True)
+        tictac.pushMove(board)
         humanTurn=True
-    if tictac.gameIsOver(board,turn):
+    if tictac.gameIsOver():
         playing=False
-    tmp=turn
-    turn=opponent
-    opponent=tmp
-    tictac.printBoard(board)
+    tictac.printBoard()

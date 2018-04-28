@@ -1,15 +1,25 @@
 from IBoardGame import IBoardGame
 
 class TicTacToe(IBoardGame): 
-    def gameIsOver(self,board,turn):
-        return self.evaluate(board,turn) !=None
-    def evaluate(self,board,turn):
+    def __init__(self,startPlayer,humanStarts):
+        self.board=self.createBoard()
+        self.movestack=[]
+        if(startPlayer=="x"):
+            self.opponent="o"
+        else:
+            self.opponent='x'
+        self.turn=startPlayer
+        if(humanStarts):
+            self.player=self.opponent
+        else:
+            self.player=self.turn
+        
+    def gameIsOver(self):
+        return self.evaluate() !=None
+    def evaluate(self):
+        board=self.board
         qtdEmpty=0
         resp=None
-        for i in range(0,3):
-            for j in range(0,3):
-                if board[i][j] is None:
-                    qtdEmpty=qtdEmpty+1
         winner=None
         for i in range(0,3):
             for j in range(0,3):
@@ -33,33 +43,53 @@ class TicTacToe(IBoardGame):
                     resp=qtdEmpty+1
                 else:
                     resp=1
-                if winner != turn:
+                if winner != self.player:
                     resp=resp*-1
         return resp
-    def availableMoves(self,board,turn):
+    def availableMoves(self):
+        turn=self.turn
         resp=[]
         for i in range(0,3):
             for j in range(0,3):
-                if board[i][j] is None:
+                if self.board[i][j] is None:
                     tmp=self.createBoard()
-                    tmp[0]=board[0].copy()
-                    tmp[1]=board[1].copy()
-                    tmp[2]=board[2].copy()
+                    tmp[0]=self.board[0].copy()
+                    tmp[1]=self.board[1].copy()
+                    tmp[2]=self.board[2].copy()
                     tmp[i][j]=turn
                     resp.append(tmp)
         return resp
     def createBoard(self):
-        board=[[None]*3,[None]*3,[None]*3]    
-        return board
-    def printBoard(self,board):
+        resp=[[None]*3,[None]*3,[None]*3]    
+        return resp
+    def setBoard(self,board):
+        self.board=board
+    def getBoard(self):
+        return self.board
+    def pushMove(self,move):
+        self.movestack.insert(0,move)
+        self.board=move
+        self.changeTurn()
+    def popMove(self):
+        self.board=self.movestack.pop()
+        self.changeTurn()
+    def printBoard(self):
         print("Inicio")
-        print(board[0])
-        print(board[1])
-        print(board[2])
+        print(self.board[0])
+        print(self.board[1])
+        print(self.board[2])
         print("FIM")
-    def humanPlay(self,board:list,turn:str):
+  
+    def humanPlay(self):
         inpu=input("Please enter your play: ")
         p=inpu.split(",")
         lin=int(p[0])
         col=int(p[1])
-        board[lin][col]=turn
+        self.board[lin][col]=self.turn
+        self.changeTurn()
+    def getLastMove(self):
+        return self.board
+    def changeTurn(self):
+        tmp=self.turn
+        self.turn=self.opponent
+        self.opponent=tmp

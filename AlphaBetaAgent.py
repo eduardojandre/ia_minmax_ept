@@ -1,19 +1,18 @@
 class AlphaBetaAgent(object):
     def __init__(self, boardGame):
         self.boardGame=boardGame
-    def alphabeta(self,node, depth, a, b, maximizingPlayer,turn,opponent):
+    def alphabeta(self, depth, a, b, maximizingPlayer):
         game=self.boardGame
-        if (depth == 0 or game.gameIsOver(node,turn)): #limit of search or node is a terminal node
-            return game.evaluate(node,turn),node #the heuristic value of node
-        if maximizingPlayer:
-            moves=game.availableMoves(node,turn)
-        else:
-            moves=game.availableMoves(node,opponent)
+        if (depth == 0 or game.gameIsOver()): #limit of search or node is a terminal node
+            return game.evaluate(),game.getLastMove() #the heuristic value of node
+        moves=game.availableMoves()
         if (maximizingPlayer):
             vBest=float('-inf')
             bestChild=None
             for child in moves:
-                v,board =self.alphabeta(child, depth - 1, a, b, False,turn,opponent)
+                game.pushMove(child)
+                v,move =self.alphabeta(depth - 1, a, b, False)
+                game.popMove()
                 if(v>=vBest):
                     vBest=v
                     bestChild=child
@@ -25,7 +24,9 @@ class AlphaBetaAgent(object):
             vBest = float('inf')
             bestChild=None
             for child in moves:
-                v,board = self.alphabeta(child, depth - 1, a, b, True,turn,opponent)
+                game.pushMove(child)
+                v,move = self.alphabeta(depth - 1, a, b, True)
+                game.popMove()
                 if(v<=vBest):
                     vBest=v
                     bestChild=child
