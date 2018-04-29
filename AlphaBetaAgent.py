@@ -17,7 +17,8 @@ class AlphaBetaAgent(object):
                     vBest=v
                     bestChild=child
                 a = max(a, vBest)
-                if (b < a):
+                if (b <= a):
+                    vBest=float('inf')
                     break #(* β cut-off *)
             return vBest,bestChild
         else:
@@ -31,6 +32,7 @@ class AlphaBetaAgent(object):
                     vBest=v
                     bestChild=child
                 b = min(b, vBest)
-                if (b < a):
+                if (b <= a):
+                    vBest=float('-inf')
                     break #(* α cut-off *)
             return vBest,bestChild
