@@ -11,7 +11,7 @@ class IBoardGame(object, metaclass=abc.ABCMeta):
     def availableMoves(self):
         raise NotImplementedError('users must define availableMoves to use this base class')
     @abc.abstractmethod
-    def setBoard(self):
+    def setBoard(self,board):
         raise NotImplementedError('users must define setBoard to use this base class')
     @abc.abstractmethod
     def printBoard(self):

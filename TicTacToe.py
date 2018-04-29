@@ -79,7 +79,6 @@ class TicTacToe(IBoardGame):
         print(self.board[1])
         print(self.board[2])
         print("FIM")
-  
     def humanPlay(self):
         inpu=input("Please enter your play: ")
         p=inpu.split(",")

@@ -9,7 +9,7 @@ class AlphaBetaAgent(object):
         if (maximizingPlayer):
             vBest=float('-inf')
             bestChild=None
-            for child in moves:
+            for child in moves:  
                 game.pushMove(child)
                 v,move =self.alphabeta(depth - 1, a, b, False)
                 game.popMove()
