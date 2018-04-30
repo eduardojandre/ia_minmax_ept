@@ -7,8 +7,12 @@ class ChessGame(IBoardGame):
         self.board = chess.Board()
         if(machineStarts):
             self.player=chess.WHITE
+            self.opponent=chess.BLACK
+            self.turn=chess.WHITE
         else:
+            self.turn=chess.BLACK
             self.player=chess.BLACK
+            self.opponent=chess.WHITE
     def gameIsOver(self):
         return self.board.is_game_over(True)
 
@@ -29,15 +33,13 @@ class ChessGame(IBoardGame):
             if(len(result)>3):
                 resp= 0
             else:
-                if(result[0]=="1"):
+                if(result[0]=="1" and self.player==chess.WHITE):
                     resp=1
                 else:
                     resp=-1
                 resp=resp*1000000
                 resp=resp-self.board.fullmove_number
         return resp
-
-
     def availableMoves(self):
         return list(self.board.legal_moves)
     def setBoard(self,board):
@@ -51,8 +53,13 @@ class ChessGame(IBoardGame):
         return self.board
     def pushMove(self,move):
         self.board.push(move)
+        self.changeTurn()
+    def changeTurn(self):
+        self.turn=not self.turn 
+        self.opponent=not self.opponent
     def popMove(self):
         self.board.pop()
+        self.changeTurn()
     def getLastMove(self):
         return self.board.peek()
     def humanPlay(self):

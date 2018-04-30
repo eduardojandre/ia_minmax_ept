@@ -1,12 +1,13 @@
 from ChessGame import ChessGame
 from AlphaBetaAgent import AlphaBetaAgent
+from MctsAgent import MctsAgent
 import random
 
 playing=True
 humanTurn=bool(int(input("Human starts? ")))#
 chess=ChessGame(not humanTurn)
-agent=AlphaBetaAgent(chess)
-
+#agent=AlphaBetaAgent(chess)
+agent=MctsAgent(chess)
 
 
 chess.printBoard()
@@ -15,8 +16,7 @@ while playing:
         chess.humanPlay()
         humanTurn=False
     else:
-        v,move=agent.alphabeta(3,float('-inf'),float('inf'),True)
-        chess.pushMove(move)
+        agent.play(3)
         humanTurn=True
     if chess.gameIsOver():
         playing=False

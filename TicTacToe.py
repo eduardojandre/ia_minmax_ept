@@ -14,6 +14,7 @@ class TicTacToe(IBoardGame):
         else:
             self.player=self.turn
         
+        
     def gameIsOver(self):
         return self.evaluate() !=None
     def evaluate(self):
@@ -49,15 +50,16 @@ class TicTacToe(IBoardGame):
     def availableMoves(self):
         turn=self.turn
         resp=[]
-        for i in range(0,3):
-            for j in range(0,3):
-                if self.board[i][j] is None:
-                    tmp=self.createBoard()
-                    tmp[0]=self.board[0].copy()
-                    tmp[1]=self.board[1].copy()
-                    tmp[2]=self.board[2].copy()
-                    tmp[i][j]=turn
-                    resp.append(tmp)
+        if(not self.gameIsOver()):
+            for i in range(0,3):
+                for j in range(0,3):
+                    if self.board[i][j] is None:
+                        tmp=self.createBoard()
+                        tmp[0]=self.board[0].copy()
+                        tmp[1]=self.board[1].copy()
+                        tmp[2]=self.board[2].copy()
+                        tmp[i][j]=turn
+                        resp.append(tmp)
         return resp
     def createBoard(self):
         resp=[[None]*3,[None]*3,[None]*3]    
@@ -67,7 +69,7 @@ class TicTacToe(IBoardGame):
     def getBoard(self):
         return self.board
     def pushMove(self,move):
-        self.movestack.insert(0,move)
+        self.movestack.append(self.board)
         self.board=move
         self.changeTurn()
     def popMove(self):

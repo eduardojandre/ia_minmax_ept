@@ -1,6 +1,9 @@
 class AlphaBetaAgent(object):
     def __init__(self, boardGame):
         self.boardGame=boardGame
+    def play(self,depth):
+        v,move=self.alphabeta(depth,float('-inf'),float('inf'),True)
+        self.boardGame.pushMove(move)
     def alphabeta(self, depth, a, b, maximizingPlayer):
         game=self.boardGame
         if (depth == 0 or game.gameIsOver()): #limit of search or node is a terminal node
