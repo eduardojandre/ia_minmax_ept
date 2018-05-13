@@ -6,8 +6,8 @@ import random
 playing=True
 humanTurn=bool(int(input("Human starts? ")))#
 tictac=TicTacToe("x",humanTurn)
-#agent=AlphaBetaAgent(tictac)
-agent=MctsAgent(tictac)
+agent=AlphaBetaAgent(tictac)
+#agent=MctsAgent(tictac)
 
 
 tictac.printBoard()

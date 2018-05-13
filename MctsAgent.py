@@ -4,13 +4,16 @@ import random
 class Object(object):
     pass
 class MctsAgent(object):
-    def __init__(self, boardGame):
+    def __init__(self, boardGame,ept,timeToPlay):
         self.boardGame=boardGame
         self.jogada=0
+        self.simuCounts=0
+        self.ept=ept
+        self.timeToPlay=timeToPlay
     def uct(self,node):
         if(node.simulations==0):
             return float('inf')
-        return (node.wins/node.simulations)+(1.41*math.sqrt(math.log(node.parent.simulations)/node.simulations))
+        return (node.wins/node.simulations)+(3*math.sqrt(math.log(node.parent.simulations)/node.simulations))
     def createNode(self,node,move,player):
         child=Object()
         child.simulations=0
@@ -65,11 +68,11 @@ class MctsAgent(object):
     def simulate(self,node):
         result=0
         qtdMoves=0
-        ept=4
-        while (not self.boardGame.gameIsOver() and qtdMoves < ept):
+        while (not self.boardGame.gameIsOver() and qtdMoves < self.ept):
             move=random.choice(self.boardGame.availableMoves())
             self.boardGame.pushMove(move)
             qtdMoves+=1
+            self.simuCounts=self.simuCounts+1
         result=self.boardGame.evaluate()
         if(result<0):
             result=-1
@@ -94,21 +97,25 @@ class MctsAgent(object):
         self.root=self.createNode(None,None,self.boardGame.player)
         self.expand(self.root,self.boardGame.turn)
         self.jogada+=1
-        start=time.time()
         self.root.simulations=1
+        self.simuCounts=0
         count=0
-        while((time.time()-start)<60):
+        start=time.time()
+        while((time.time()-start)<self.timeToPlay):
             selected=self.select(self.root)
             result=self.simulate(selected)
             self.backpropagation(selected,result)
-            count=count+1
-        print(count)
-
-            
+            count=count+1            
         best=float('-inf')
+        print("MCTS Play")
+        print("Nodes:")
+        print(count)
+        print("Simulations:")
+        print(self.simuCounts)
         bestNode=None
         for child in self.root.childs:
             if(child.simulations>best):
                 best=child.simulations
                 bestNode=child
         self.boardGame.pushMove(bestNode.move)
+        return bestNode.move
