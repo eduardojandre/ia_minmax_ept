@@ -1,6 +1,6 @@
-from TicTacToe import TicTacToe
-from MctsAgent import MctsAgent
-from AlphaBetaAgent import AlphaBetaAgent
+from Boards.TicTacToe import TicTacToe
+from Agents.MctsAgent import MctsAgent
+from Agents.AlphaBetaAgent import AlphaBetaAgent
 import random
 
 playing=True

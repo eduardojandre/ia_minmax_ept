@@ -1,5 +1,5 @@
 import chess
-from IBoardGame import IBoardGame
+from Boards.IBoardGame import IBoardGame
 
 
 class ChessGame(IBoardGame): 
@@ -90,7 +90,7 @@ class ChessGame(IBoardGame):
         return resp
     def evaluate(self):
         if(not self.board.is_game_over()):
-            return self.valueForColor(self.player)-self.valueForColor(not self.player)
+            return self.valueForColor(self.player)-self.valueForColor(not self.player)-self.board.fullmove_number
         else:
             result=self.board.result(False)
             resp=0

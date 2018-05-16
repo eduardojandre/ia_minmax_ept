@@ -6,7 +6,7 @@ class Object(object):
 class MctsAgent(object):
     def __init__(self, boardGame,ept,timeToPlay):
         self.boardGame=boardGame
-        self.jogada=0
+        self.plays=0
         self.simuCounts=0
         self.ept=ept
         self.timeToPlay=timeToPlay
@@ -93,10 +93,10 @@ class MctsAgent(object):
             self.boardGame.popMove()
         return result
 
-    def play(self,depth):
+    def play(self):
         self.root=self.createNode(None,None,self.boardGame.player)
         self.expand(self.root,self.boardGame.turn)
-        self.jogada+=1
+        self.plays+=1
         self.root.simulations=1
         self.simuCounts=0
         count=0
@@ -119,3 +119,10 @@ class MctsAgent(object):
                 bestNode=child
         self.boardGame.pushMove(bestNode.move)
         return bestNode.move
+        
+    def printStats(self):
+        print("--------------Stats--------------")
+        print("Plays: " + str(self.plays))
+        print("---------------MCts--------------")
+    def getStats(self):
+        return str(self.plays )

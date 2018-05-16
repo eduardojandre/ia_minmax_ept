@@ -1,4 +1,4 @@
-from IBoardGame import IBoardGame
+from Boards.IBoardGame import IBoardGame
 
 class TicTacToe(IBoardGame): 
     def __init__(self,startPlayer,humanStarts):

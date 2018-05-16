@@ -1,15 +1,21 @@
 import time
 
 class AlphaBetaAgent(object):
-    def __init__(self, boardGame):
+    def __init__(self, boardGame,depth):
         self.boardGame=boardGame
-    def play(self,depth):
+        self.depth=depth
+        self.plays=0
+        self.totalTime=0
+    def play(self):
         start=time.time()
-        v,move=self.alphabeta(depth,float('-inf'),float('inf'),True)
+        v,move=self.alphabeta(self.depth,float('-inf'),float('inf'),True)
         self.boardGame.pushMove(move)
         print("AlphaBetaAgent")
         print("Time: ")
-        print(time.time()-start)
+        tmp=time.time()-start
+        print(tmp)
+        self.totalTime+=tmp
+        self.plays+=1
         return move
     def alphabeta(self, depth, a, b, maximizingPlayer):
         game=self.boardGame
@@ -47,3 +53,10 @@ class AlphaBetaAgent(object):
                     vBest=float('-inf')
                     break #(* α cut-off *)
             return vBest,bestChild
+    def printStats(self):
+        print("--------------Stats--------------")
+        print("Plays: " + str(self.plays))
+        print("Total time: " + str(self.totalTime))
+        print("--------------MinMa--------------")
+    def getStats(self):
+        return str(self.plays) + ","  + str(self.totalTime)
