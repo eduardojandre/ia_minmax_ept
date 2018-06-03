@@ -54,7 +54,7 @@ class ChessGame(IBoardGame):
          0,  0,  0,  0,  0,  0,  0,  0 
     ]
     def __init__(self,machineStarts):
-        self.board = chess.Board()
+        self.board = chess.Board("7k/ppp1rppr/2bbq2p/5n2/1qn5/3K4/8/4q3 w - - 40 503")
         self.turn=chess.WHITE
         if(machineStarts):
             self.player=chess.WHITE
@@ -100,7 +100,10 @@ class ChessGame(IBoardGame):
                 if(result[0]=="1" and self.player==chess.WHITE):
                     resp=1
                 else:
-                    resp=-1
+                    if (result[0]=="0" and self.player==chess.BLACK):
+                        resp=1
+                    else:
+                        resp=-1
                 resp=resp*1000000000
                 resp=resp-self.board.fullmove_number
         return resp

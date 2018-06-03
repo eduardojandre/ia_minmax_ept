@@ -60,3 +60,5 @@ class AlphaBetaAgent(object):
         print("--------------MinMa--------------")
     def getStats(self):
         return str(self.plays) + ","  + str(self.totalTime)
+    def pushOponnentMove(self,move):
+        self.boardGame.pushMove(move)

@@ -17,11 +17,11 @@ def play(whiteAgent,blackAgent):
     while playing:
         if whiteTurn:
             move=whiteAgent.play()
-            chessBlack.pushMove(move)
+            blackAgent.pushOponnentMove(move)
             whiteTurn=False
         else:
             move=blackAgent.play()
-            chessWhite.pushMove(move)
+            whiteAgent.pushOponnentMove(move)
             whiteTurn=True
         chessWhite.printBoard()
         qtdPlays=qtdPlays+1
