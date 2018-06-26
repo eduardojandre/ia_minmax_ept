@@ -54,7 +54,7 @@ class ChessGame(IBoardGame):
          0,  0,  0,  0,  0,  0,  0,  0 
     ]
     def __init__(self,machineStarts):
-        self.board = chess.Board("7k/ppp1rppr/2bbq2p/5n2/1qn5/3K4/8/4q3 w - - 40 503")
+        self.board = chess.Board()
         self.turn=chess.WHITE
         if(machineStarts):
             self.player=chess.WHITE
@@ -63,6 +63,8 @@ class ChessGame(IBoardGame):
             self.player=chess.BLACK
             self.opponent=chess.WHITE
     def gameIsOver(self):
+        if(self.board.fullmove_number>240):
+            return True
         return self.board.is_game_over(False)
 
     def valueForColor(self,color):
@@ -89,6 +91,8 @@ class ChessGame(IBoardGame):
         #resp+=len(self.board.pieces(chess.ROOK,color)) * 500
         return resp
     def evaluate(self):
+        if(self.board.fullmove_number>240):
+            return 0
         if(not self.board.is_game_over()):
             return self.valueForColor(self.player)-self.valueForColor(not self.player)-self.board.fullmove_number
         else:

@@ -9,8 +9,8 @@ result=[]
 for i in range(0,20):
     chess=ChessGame(True)
     chess2=ChessGame(False)
-    alpha=AlphaBetaAgent(chess,3)
-    mcts=MctsAgent(chess2,float('inf'),20,False)
+    ept2=MctsAgent(chess2,4,20,True)
+    ept=MctsAgent(chess,4,20,False)
     
-    result.append(eng.play(alpha,mcts))
+    result.append(eng.play(ept,ept2))
 print(result)

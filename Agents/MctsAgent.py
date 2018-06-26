@@ -4,17 +4,18 @@ import random
 class Object(object):
     pass
 class MctsAgent(object):
-    def __init__(self, boardGame,ept,timeToPlay):
+    def __init__(self, boardGame,ept,timeToPlay,reTree):
         self.boardGame=boardGame
         self.plays=0
         self.simuCounts=0
         self.ept=ept
         self.timeToPlay=timeToPlay
         self.root=None
+        self.reTree=reTree
     def uct(self,node):
         if(node.simulations==0):
             return float('inf')
-        return (node.wins/node.simulations)+(4*math.sqrt(math.log(node.parent.simulations)/node.simulations))
+        return (node.wins/node.simulations)+(1.2*math.sqrt(math.log(node.parent.simulations)/node.simulations))
     def createNode(self,node,move,player):
         child=Object()
         child.simulations=0
@@ -81,27 +82,45 @@ class MctsAgent(object):
         winValue=1
         lostValue=0
         drawValue=0.5
+        improvement=0
         if(not self.boardGame.gameIsOver()):
-            improvement=(result-self.before)/self.before
+            winValue=0.75
+            lostValue=0.25
+            improvement=result
+            if(self.boardGame.player != node.player):
+                improvement=improvement*-1
+            improvement=(improvement-self.before)/self.before
             if(improvement>0.5):
                 improvement=1
             if(improvement<-0.5):
                 improvement=-1
-            winValue=0.75 + improvement*0.2
-            lostValue=0.25 + improvement*0.2
+            #in perspective of self.boardGame.player
+            improvement=improvement*0.2
+
         if(result<0):
             result=-1
             if(self.boardGame.player != node.player):
+                #if not in turn of self.boardGame.player
+                lostValue=lostValue-improvement
+                winValue=winValue+improvement
                 node.wins+=winValue
                 result=1
             else:
-                node.wins+=lostValue
+                lostValue=lostValue+improvement
+                winValue=winValue-improvement
+                node.wins+=lostValue    
         else:
             if(result>0):
                 result=1
                 if (self.boardGame.player == node.player):
+                    lostValue=lostValue-improvement
+                    winValue=winValue+improvement
+
                     node.wins+=winValue
                 else:
+                    lostValue=lostValue+improvement
+                    winValue=winValue-improvement
+                    result=-1
                     node.wins+=lostValue
         node.simulations+=1
         if result==0:
@@ -114,7 +133,7 @@ class MctsAgent(object):
 
     def play(self):
         self.plays+=1
-        if self.root is None:
+        if self.root is None or not self.reTree:
             self.root=self.createNode(None,None,self.boardGame.player)
         if(not self.root.expanded):
             self.expand(self.root,self.boardGame.turn)

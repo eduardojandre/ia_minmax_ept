@@ -10,7 +10,7 @@ for i in range(0,20):
     chess=ChessGame(True)
     chess2=ChessGame(False)
     alpha=AlphaBetaAgent(chess,3)
-    mcts=MctsAgent(chess2,float('inf'),20,False)
+    mcts=MctsAgent(chess2,4,20,False)
     
     result.append(eng.play(alpha,mcts))
 print(result)
